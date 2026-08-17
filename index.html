@@ -9,13 +9,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
   :root{
-    --bg:#ECEAE4;
+    --bg:#E8E8E8;
     --white:#FFFFFF;
-    --orange:#EE5B34;
-    --black:#1A1A1A;
-    --beige:#DED7C6;
+    --orange:#EB571C;
+    --black:#252422;
+    --avatar:#171717;
+    --beige:#D5D2CC;
+    --track:#F6F6F6;
+    --fill-neutral:#D5D8DF;
+    --green:#1F6B45;
     --text:#1A1A1A;
-    --muted:#8B887E;
+    --muted:#8A857F;
+    --radius-lg:2.2vh;
+    --radius-md:1.35vh;
   }
   *{box-sizing:border-box;}
   html,body{
@@ -30,48 +36,43 @@
   .page{
     height:100vh;
     width:100vw;
-    display:flex;
-    flex-direction:column;
-    padding:2vh 2.2vw;
-    gap:1.6vh;
+    display:grid;
+    grid-template-rows:auto 18.5fr 38fr 19.5fr;
+    gap:1.7vh;
+    padding:2.4vh 3vw;
   }
 
-  /* header */
-  header{
+  /* label row */
+  .label-row{
     display:flex;
-    align-items:flex-start;
+    align-items:center;
     justify-content:space-between;
-    flex:0 0 auto;
-    gap:1vw;
+    flex-wrap:wrap;
+    gap:1vh;
   }
-  header h1{
-    font-size:2.7vh;
-    font-weight:800;
-    margin:0 0 0.4vh;
-  }
-  header p{
-    margin:0;
-    color:var(--muted);
+  .eyebrow{
     font-size:1.35vh;
-    max-width:44vw;
+    font-weight:700;
+    letter-spacing:.12em;
+    color:var(--muted);
+    text-transform:uppercase;
   }
   .actions{
     display:flex;
     align-items:center;
     gap:0.7vw;
-    flex-shrink:0;
   }
   .updated-tag{
     background:var(--white);
     border-radius:999px;
-    padding:0.9vh 1.3vw;
-    font-size:1.2vh;
+    padding:0.8vh 1.2vw;
+    font-size:1.15vh;
     color:var(--muted);
     font-weight:500;
     white-space:nowrap;
   }
   .icon-btn{
-    width:3.8vh;height:3.8vh;
+    width:3.4vh;height:3.4vh;
     border-radius:50%;
     border:none;
     background:var(--white);
@@ -81,22 +82,24 @@
     text-decoration:none;
     flex-shrink:0;
   }
-  .icon-btn svg{width:1.7vh;height:1.7vh;}
+  .icon-btn svg{width:1.5vh;height:1.5vh;}
 
   /* top row: 3 periodicity cards */
   .top-row{
-    flex:0 0 24vh;
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:1.4vw;
+    gap:1.6vw;
+    min-height:0;
   }
   .tcard{
-    border-radius:1.8vh;
-    padding:2vh 1.8vw;
+    border-radius:var(--radius-lg);
     display:flex;
     flex-direction:column;
+    align-items:center;
     justify-content:center;
-    gap:0.6vh;
+    gap:0.8vh;
+    text-align:center;
+    padding:1vh;
   }
   .tcard.orange{background:var(--orange);color:#fff;}
   .tcard.black{background:var(--black);color:#fff;}
@@ -105,97 +108,44 @@
     font-size:1.5vh;
     font-weight:700;
     text-transform:uppercase;
-    letter-spacing:.04em;
+    letter-spacing:.08em;
     opacity:.85;
   }
   .tcard .pct{
-    font-size:7.2vh;
+    font-size:7vh;
     font-weight:800;
     line-height:1;
   }
   .tcard .sub{
     font-size:1.4vh;
-    opacity:.8;
+    opacity:.75;
+    font-weight:500;
   }
 
-  /* bottom row: equipe + historico */
-  .bottom-row{
-    flex:1 1 auto;
-    display:grid;
-    grid-template-columns:1fr 1.35fr;
-    gap:1.4vw;
-    min-height:0;
-  }
+  /* generic big white panel */
   .panel{
     background:var(--white);
-    border-radius:1.8vh;
-    padding:2vh 1.8vw;
+    border-radius:var(--radius-lg);
+    padding:2.2vh 2vw;
     display:flex;
     flex-direction:column;
     min-height:0;
     overflow:hidden;
   }
   .panel h3{
-    margin:0 0 1.3vh;
-    font-size:1.5vh;
+    margin:0 0 1.6vh;
+    font-size:1.75vh;
     font-weight:700;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:.03em;
+    color:var(--text);
     flex:0 0 auto;
   }
 
-  /* equipe */
-  .team-list{
-    flex:1 1 auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    grid-auto-rows:min-content;
-    gap:0.9vh 0.9vw;
-    overflow:hidden;
-    align-content:start;
-  }
-  .team-row{
-    display:flex;
-    align-items:center;
-    gap:0.7vh;
-    background:#F7F6F2;
-    border-radius:1.2vh;
-    padding:1vh 1vw;
-    min-width:0;
-  }
-  .team-row .rank{
-    width:2.6vh;height:2.6vh;
-    border-radius:50%;
-    background:var(--black);
-    color:#fff;
-    font-size:1.15vh;
-    font-weight:700;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  }
-  .team-row .name{
-    font-size:1.35vh;
-    font-weight:600;
-    flex:1;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .team-row .pct{
-    font-size:1.4vh;
-    font-weight:700;
-    flex-shrink:0;
-    color:var(--orange);
-  }
-
-  /* historico */
-  .bars{
+  /* historico bars */
+  .bars-wrap{
     flex:1 1 auto;
     display:flex;
-    align-items:flex-end;
-    gap:0.5vw;
+    align-items:stretch;
+    gap:1.4vw;
     min-height:0;
   }
   .bar-col{
@@ -203,69 +153,88 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:flex-end;
-    height:100%;
-    gap:0.4vh;
+    gap:1vh;
     min-width:0;
   }
-  .bar-col .bar{
-    width:100%;
-    max-width:2.4vw;
-    background:var(--orange);
-    border-radius:0.5vh 0.5vh 0 0;
-    min-height:2px;
-  }
   .bar-col .bar-pct{
-    font-size:1.05vh;
+    font-size:1.5vh;
     color:var(--muted);
     font-weight:600;
   }
-  .bar-col .bar-day{
-    font-size:1vh;
-    color:var(--muted);
-  }
-
-  .mini-hist{
-    flex:0 0 auto;
-    margin-top:1.3vh;
+  .bar-col.active .bar-pct{color:var(--text);font-weight:800;}
+  .bar-track{
+    flex:1;
+    width:100%;
+    max-width:5vw;
+    background:var(--track);
+    border-radius:var(--radius-md);
     display:flex;
-    flex-direction:column;
-    gap:0.7vh;
+    align-items:flex-end;
+    overflow:hidden;
+    min-height:0;
   }
-  .mini-row{
+  .bar-fill{
+    width:100%;
+    background:var(--fill-neutral);
+    border-radius:var(--radius-md);
+    min-height:6px;
+  }
+  .bar-col.active .bar-fill{background:var(--orange);}
+  .bar-col .bar-day{
+    font-size:1.4vh;
+    color:var(--muted);
+    font-weight:600;
+  }
+  .bar-col.active .bar-day{color:var(--text);font-weight:800;}
+
+  /* ontem / equipe chips */
+  .team-grid{
+    flex:1 1 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:1.2vh 1.2vw;
+    align-content:start;
+    overflow:hidden;
+  }
+  .team-chip{
+    background:var(--track);
+    border-radius:var(--radius-md);
+    padding:1.3vh 1.4vw;
     display:flex;
     align-items:center;
-    gap:0.7vw;
+    gap:1vw;
+    min-width:0;
   }
-  .mini-label{
-    font-size:1.1vh;
+  .team-chip .avatar{
+    width:4.2vh;height:4.2vh;
+    border-radius:50%;
+    background:var(--avatar);
+    color:#fff;
+    font-size:1.4vh;
     font-weight:700;
-    color:var(--muted);
-    width:6vw;
+    display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
-    text-transform:uppercase;
-    letter-spacing:.02em;
   }
-  .mini-chips{
-    display:flex;
-    gap:0.5vw;
-    overflow:hidden;
+  .team-chip .name{
+    font-size:1.6vh;
+    font-weight:700;
     flex:1;
-  }
-  .mini-chip{
-    background:#F1EFE9;
-    border-radius:999px;
-    padding:0.5vh 0.9vw;
-    font-size:1.1vh;
-    font-weight:600;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
     white-space:nowrap;
+  }
+  .team-chip .pct{
+    font-size:1.7vh;
+    font-weight:800;
+    color:var(--green);
     flex-shrink:0;
   }
-  .mini-chip b{color:var(--orange);}
 
   .empty{
     color:var(--muted);
-    font-size:1.3vh;
+    font-size:1.4vh;
+    margin:auto;
   }
 
   .error-box{
@@ -302,11 +271,8 @@
 
 <div class="page">
 
-  <header>
-    <div>
-      <h1>Rotinas — IZE</h1>
-      <p>Acompanhamento das rotinas recorrentes do Monday, ao vivo.</p>
-    </div>
+  <div class="label-row">
+    <span class="eyebrow">Rotinas · Monday</span>
     <div class="actions">
       <span class="updated-tag" id="updatedTag">carregando...</span>
       <button class="icon-btn" id="refreshBtn" title="Atualizar">
@@ -316,7 +282,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
       </a>
     </div>
-  </header>
+  </div>
 
   <div class="top-row" id="topRow">
     <div class="tcard orange"><div class="label">Diário</div><div class="pct">—</div><div class="sub">carregando...</div></div>
@@ -324,28 +290,17 @@
     <div class="tcard beige"><div class="label">Mensal</div><div class="pct">—</div><div class="sub">carregando...</div></div>
   </div>
 
-  <div class="bottom-row">
-    <div class="panel">
-      <h3>Equipe — último dia fechado</h3>
-      <div class="team-list" id="teamList">
-        <div class="empty">carregando...</div>
-      </div>
+  <div class="panel">
+    <h3>Histórico da semana</h3>
+    <div class="bars-wrap" id="barsChart">
+      <div class="empty">carregando...</div>
     </div>
-    <div class="panel">
-      <h3>Histórico diário — últimos 14 dias</h3>
-      <div class="bars" id="barsChart">
-        <div class="empty">carregando...</div>
-      </div>
-      <div class="mini-hist">
-        <div class="mini-row">
-          <span class="mini-label">Semanal</span>
-          <div class="mini-chips" id="weeklyHistory"></div>
-        </div>
-        <div class="mini-row">
-          <span class="mini-label">Mensal</span>
-          <div class="mini-chips" id="monthlyHistory"></div>
-        </div>
-      </div>
+  </div>
+
+  <div class="panel">
+    <h3>Ontem</h3>
+    <div class="team-grid" id="teamGrid">
+      <div class="empty">carregando...</div>
     </div>
   </div>
 
@@ -356,6 +311,7 @@ const SHEET_ID = "1BG7MgKomzCf4P3UwVIfHq4AlNiHO0msTDvFUtSuAZ7Y";
 const GID = "614964491";
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
 const XLSX_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx`;
+const DIAS_SEMANA = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
 
 document.getElementById("downloadBtn").href = XLSX_URL;
 
@@ -383,6 +339,14 @@ function isFeito(status){
   return stripAccents(status) === "feito";
 }
 
+function initials(name){
+  const parts = (name||"").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return "?";
+  const first = parts[0][0] || "";
+  const second = parts.length > 1 ? (parts[1][0] || "") : "";
+  return (first+second).toUpperCase();
+}
+
 function normalizeRows(raw){
   return raw
     .filter(r => r.elemento && r.periodicidade)
@@ -403,19 +367,30 @@ function periodRows(rows, periodKey){
   return rows.filter(r => r.periodicidade === periodKey);
 }
 
-function latestDateOf(rows){
-  if(!rows.length) return null;
-  return rows.reduce((max,r) => r.dateAntigo > max ? r.dateAntigo : max, rows[0].dateAntigo);
+// pega, por id_item, o lançamento mais recente dentro da periodicidade —
+// evita depender de todos os itens compartilharem a mesma data (semanal/mensal
+// têm vencimentos individuais, escalonados por item).
+function latestPerItem(rows, periodKey){
+  const pr = periodRows(rows, periodKey);
+  const map = new Map();
+  pr.forEach(r => {
+    const key = r.id || r.elemento;
+    const cur = map.get(key);
+    if(!cur || r.dateAntigo > cur.dateAntigo) map.set(key, r);
+  });
+  return [...map.values()];
 }
 
 function summaryFor(rows, periodKey){
-  const pr = periodRows(rows, periodKey);
-  const latest = latestDateOf(pr);
-  if(!latest) return {pct:null, feitas:0, total:0, dateLabel:null};
-  const cycle = pr.filter(r => r.dateAntigo.getTime() === latest.getTime());
-  const feitas = cycle.filter(r => r.feito).length;
-  const total = cycle.length;
-  return {pct: total ? Math.round((feitas/total)*100) : 0, feitas, total, dateLabel: formatDateBR(latest)};
+  const latest = latestPerItem(rows, periodKey);
+  const feitas = latest.filter(r => r.feito).length;
+  const total = latest.length;
+  return {pct: total ? Math.round((feitas/total)*100) : null, feitas, total};
+}
+
+function latestDateOf(rows){
+  if(!rows.length) return null;
+  return rows.reduce((max,r) => r.dateAntigo > max ? r.dateAntigo : max, rows[0].dateAntigo);
 }
 
 function uniqueDatesDesc(rows, periodKey, limit){
@@ -462,64 +437,55 @@ function render(rows){
     <div class="tcard orange">
       <div class="label">Diário</div>
       <div class="pct">${dia.pct === null ? "—" : dia.pct+"%"}</div>
-      <div class="sub">${dia.dateLabel ? dia.dateLabel+" · "+dia.feitas+"/"+dia.total+" feitas" : "sem dados ainda"}</div>
+      <div class="sub">${dia.total ? dia.feitas+"/"+dia.total+" feitas" : "sem dados ainda"}</div>
     </div>
     <div class="tcard black">
       <div class="label">Semanal</div>
       <div class="pct">${sem.pct === null ? "—" : sem.pct+"%"}</div>
-      <div class="sub">${sem.dateLabel ? sem.dateLabel+" · "+sem.feitas+"/"+sem.total+" feitas" : "sem dados ainda"}</div>
+      <div class="sub">${sem.total ? sem.feitas+"/"+sem.total+" feitas" : "sem dados ainda"}</div>
     </div>
     <div class="tcard beige">
       <div class="label">Mensal</div>
       <div class="pct">${mes.pct === null ? "—" : mes.pct+"%"}</div>
-      <div class="sub">${mes.dateLabel ? mes.dateLabel+" · "+mes.feitas+"/"+mes.total+" feitas" : "sem dados ainda"}</div>
+      <div class="sub">${mes.total ? mes.feitas+"/"+mes.total+" feitas" : "sem dados ainda"}</div>
     </div>
   `;
 
-  const team = teamBreakdown(rows);
-  const teamList = document.getElementById("teamList");
-  if(!team.length){
-    teamList.innerHTML = `<div class="empty">Ainda não há um dia diário fechado para mostrar por responsável.</div>`;
-  } else {
-    teamList.innerHTML = team.map((t,i) => `
-      <div class="team-row">
-        <div class="rank">${i+1}</div>
-        <div class="name">${t.name}</div>
-        <div class="pct">${t.pct}%</div>
-      </div>
-    `).join("");
-  }
-
-  const dailyDates = uniqueDatesDesc(rows, "diario", 14).reverse();
+  // historico da semana (ultimos 5 dias diarios registrados)
+  const dailyDates = uniqueDatesDesc(rows, "diario", 5).reverse();
   const barsEl = document.getElementById("barsChart");
   if(!dailyDates.length){
     barsEl.innerHTML = `<div class="empty">Sem histórico diário ainda.</div>`;
   } else {
+    const mostRecent = dailyDates[dailyDates.length-1].getTime();
     barsEl.innerHTML = dailyDates.map(date => {
       const s = pctForDate(rows, "diario", date);
+      const isActive = date.getTime() === mostRecent;
+      const dayLabel = DIAS_SEMANA[date.getDay()];
       return `
-        <div class="bar-col" title="${formatDateBR(date)} — ${s.feitas}/${s.total} feitas">
+        <div class="bar-col ${isActive ? 'active':''}" title="${formatDateBR(date)} — ${s.feitas}/${s.total} feitas">
           <div class="bar-pct">${s.pct}%</div>
-          <div class="bar" style="height:${Math.max(s.pct,3)}%"></div>
-          <div class="bar-day">${formatDateBR(date)}</div>
+          <div class="bar-track"><div class="bar-fill" style="height:${Math.max(s.pct,4)}%"></div></div>
+          <div class="bar-day">${dayLabel}</div>
         </div>
       `;
     }).join("");
   }
 
-  const weeklyDates = uniqueDatesDesc(rows, "semanal", 6);
-  const weeklyEl = document.getElementById("weeklyHistory");
-  weeklyEl.innerHTML = weeklyDates.length ? weeklyDates.map(date => {
-    const s = pctForDate(rows, "semanal", date);
-    return `<div class="mini-chip">${formatDateBR(date)} · <b>${s.pct}%</b></div>`;
-  }).join("") : `<div class="empty">sem histórico ainda</div>`;
-
-  const monthlyDates = uniqueDatesDesc(rows, "mensal", 6);
-  const monthlyEl = document.getElementById("monthlyHistory");
-  monthlyEl.innerHTML = monthlyDates.length ? monthlyDates.map(date => {
-    const s = pctForDate(rows, "mensal", date);
-    return `<div class="mini-chip">${formatDateBR(date)} · <b>${s.pct}%</b></div>`;
-  }).join("") : `<div class="empty">sem histórico ainda</div>`;
+  // ontem — por responsavel
+  const team = teamBreakdown(rows);
+  const teamGrid = document.getElementById("teamGrid");
+  if(!team.length){
+    teamGrid.innerHTML = `<div class="empty">Ainda não há um dia diário fechado para mostrar por responsável.</div>`;
+  } else {
+    teamGrid.innerHTML = team.map(t => `
+      <div class="team-chip">
+        <div class="avatar">${initials(t.name)}</div>
+        <div class="name">${t.name}</div>
+        <div class="pct">${t.pct}%</div>
+      </div>
+    `).join("");
+  }
 
   document.getElementById("updatedTag").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
   document.getElementById("errorBox").style.display = "none";
@@ -549,7 +515,7 @@ document.getElementById("retryBtn").addEventListener("click", load);
 
 load();
 
-// auto-refresh a cada 10 minutos, útil pra deixar rodando na TV
+// auto-refresh a cada 10 minutos, util pra deixar rodando na TV
 setInterval(load, 10 * 60 * 1000);
 </script>
 </body>
