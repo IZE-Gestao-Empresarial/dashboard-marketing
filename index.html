@@ -87,8 +87,8 @@
   /* leads no mes */
   .leads-body{flex:1 1 auto;display:flex;align-items:center;gap:1.8vw;min-height:0;}
   .gauge-wrap{position:relative;width:17vh;height:9vh;flex-shrink:0;}
-  .gauge-tick{position:absolute;bottom:2.4vh;left:50%;width:1.05vh;height:6.3vh;margin-left:-0.525vh;transform-origin:50% 100%;}
-  .gauge-tick i{display:block;width:100%;height:2.9vh;border-radius:999px;background:#E3E0D8;}
+  .gauge-tick{position:absolute;bottom:2.2vh;left:50%;width:1.7vh;height:6.3vh;margin-left:-0.85vh;transform-origin:50% 100%;}
+  .gauge-tick i{display:block;width:100%;height:3.6vh;border-radius:999px;background:#E3E0D8;}
   .gauge-tick.active i{background:var(--orange);}
   .gauge-num{position:absolute;left:0;right:0;bottom:0;height:2.8vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
   .gauge-num .n{font-size:2.9vh;font-weight:600;line-height:1;}
@@ -392,7 +392,7 @@ function renderRotinas(rawRows){
 
 /* ---------- aquisição / rd station (coluna direita) ---------- */
 function buildGauge(pct){
-  const N = 11, startA = -90, endA = 90;
+  const N = 10, startA = -90, endA = 90;
   const filledCount = Math.round((Math.max(0,Math.min(pct,100))/100) * N);
   let html = "";
   for(let i=0;i<N;i++){
