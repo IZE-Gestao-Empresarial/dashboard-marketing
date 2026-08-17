@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rotinas — IZE</title>
+<title>IZE — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -22,6 +22,7 @@
     --muted:#8A857F;
     --radius-lg:2.2vh;
     --radius-md:1.35vh;
+    --radius-sm:0.8vh;
   }
   *{box-sizing:border-box;}
   html,body{
@@ -37,10 +38,13 @@
     height:100vh;
     width:100vw;
     display:grid;
-    grid-template-rows:auto 18.5fr 38fr 19.5fr;
-    gap:1.7vh;
-    padding:2.4vh 3vw;
+    grid-template-columns:40.3fr 50fr;
+    gap:2.4vw;
+    padding:2.2vh 2.6vw;
   }
+  .col{display:grid;gap:1.6vh;min-height:0;}
+  .col-left{grid-template-rows:auto 22.1fr 46.6fr 23.8fr;}
+  .col-right{grid-template-rows:auto 25.8fr 9.6fr 57.4fr;}
 
   /* label row */
   .label-row{
@@ -88,7 +92,7 @@
   .top-row{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:1.6vw;
+    gap:1.4vw;
     min-height:0;
   }
   .tcard{
@@ -105,19 +109,19 @@
   .tcard.black{background:var(--black);color:#fff;}
   .tcard.beige{background:var(--beige);color:var(--text);}
   .tcard .label{
-    font-size:1.5vh;
+    font-size:1.4vh;
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:.08em;
     opacity:.85;
   }
   .tcard .pct{
-    font-size:7vh;
+    font-size:6.4vh;
     font-weight:800;
     line-height:1;
   }
   .tcard .sub{
-    font-size:1.4vh;
+    font-size:1.3vh;
     opacity:.75;
     font-weight:500;
   }
@@ -126,15 +130,15 @@
   .panel{
     background:var(--white);
     border-radius:var(--radius-lg);
-    padding:2.2vh 2vw;
+    padding:2vh 1.8vw;
     display:flex;
     flex-direction:column;
     min-height:0;
     overflow:hidden;
   }
   .panel h3{
-    margin:0 0 1.6vh;
-    font-size:1.75vh;
+    margin:0 0 1.4vh;
+    font-size:1.6vh;
     font-weight:700;
     color:var(--text);
     flex:0 0 auto;
@@ -145,7 +149,7 @@
     flex:1 1 auto;
     display:flex;
     align-items:stretch;
-    gap:1.4vw;
+    gap:1.2vw;
     min-height:0;
   }
   .bar-col{
@@ -153,11 +157,11 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:1vh;
+    gap:0.9vh;
     min-width:0;
   }
   .bar-col .bar-pct{
-    font-size:1.5vh;
+    font-size:1.4vh;
     color:var(--muted);
     font-weight:600;
   }
@@ -181,7 +185,7 @@
   }
   .bar-col.active .bar-fill{background:var(--orange);}
   .bar-col .bar-day{
-    font-size:1.4vh;
+    font-size:1.3vh;
     color:var(--muted);
     font-weight:600;
   }
@@ -191,32 +195,32 @@
   .team-grid{
     flex:1 1 auto;
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-    gap:1.2vh 1.2vw;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:1.1vh 1vw;
     align-content:start;
     overflow:hidden;
   }
   .team-chip{
     background:var(--track);
     border-radius:var(--radius-md);
-    padding:1.3vh 1.4vw;
+    padding:1.2vh 1.2vw;
     display:flex;
     align-items:center;
-    gap:1vw;
+    gap:0.9vw;
     min-width:0;
   }
   .team-chip .avatar{
-    width:4.2vh;height:4.2vh;
+    width:3.8vh;height:3.8vh;
     border-radius:50%;
     background:var(--avatar);
     color:#fff;
-    font-size:1.4vh;
+    font-size:1.3vh;
     font-weight:700;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
   .team-chip .name{
-    font-size:1.6vh;
+    font-size:1.5vh;
     font-weight:700;
     flex:1;
     min-width:0;
@@ -225,9 +229,146 @@
     white-space:nowrap;
   }
   .team-chip .pct{
-    font-size:1.7vh;
+    font-size:1.6vh;
     font-weight:800;
     color:var(--green);
+    flex-shrink:0;
+  }
+
+  /* leads no mes */
+  .leads-body{
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    gap:1.8vw;
+    min-height:0;
+  }
+  .gauge-wrap{
+    position:relative;
+    width:11vh;height:11vh;
+    flex-shrink:0;
+  }
+  .gauge-wrap svg{width:100%;height:100%;}
+  .gauge-num{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .gauge-num .n{font-size:2.4vh;font-weight:800;line-height:1;}
+  .gauge-num .d{font-size:1.1vh;color:var(--muted);font-weight:600;}
+  .leads-stats{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:1.2vh;
+    min-width:0;
+  }
+  .leads-stats .goal{
+    font-size:1.5vh;
+    font-weight:700;
+    color:var(--orange);
+  }
+  .split-bar{
+    height:1.7vh;
+    display:flex;
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .split-bar .seg.black{background:var(--avatar);}
+  .split-bar .seg.green{background:var(--green);}
+  .split-labels{
+    display:flex;
+    justify-content:space-between;
+  }
+  .split-labels .lbl{font-size:1.1vh;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+  .split-labels .val{font-size:2vh;font-weight:800;display:block;color:var(--text);}
+  .split-labels .r{text-align:right;}
+
+  /* meta organico */
+  .meta-body{
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    gap:1.4vw;
+    min-height:0;
+  }
+  .meta-track{
+    flex:1;
+    height:2.4vh;
+    background:var(--track);
+    border-radius:999px;
+    position:relative;
+    overflow:hidden;
+  }
+  .meta-fill{
+    height:100%;
+    background:var(--green);
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    padding-left:1vw;
+  }
+  .meta-fill span{color:#fff;font-size:1.15vh;font-weight:700;}
+  .meta-total{
+    font-size:1.3vh;
+    color:var(--muted);
+    font-weight:600;
+    flex-shrink:0;
+    white-space:nowrap;
+  }
+
+  /* canais */
+  .channels-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.4vw;
+    min-height:0;
+  }
+  .channel-list{
+    flex:1 1 auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    gap:0.6vh;
+    min-height:0;
+    overflow:hidden;
+  }
+  .channel-row{
+    display:flex;
+    align-items:center;
+    gap:0.8vw;
+  }
+  .channel-row .label{
+    width:36%;
+    font-size:1.25vh;
+    color:var(--text);
+    font-weight:500;
+    flex-shrink:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .channel-row .track{
+    flex:1;
+    height:1.5vh;
+    background:var(--track);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .channel-row .fill{
+    height:100%;
+    border-radius:999px;
+  }
+  .channel-row.black .fill{background:var(--avatar);}
+  .channel-row.green .fill{background:var(--green);}
+  .channel-row .value{
+    width:2.6vw;
+    text-align:right;
+    font-weight:700;
+    font-size:1.25vh;
     flex-shrink:0;
   }
 
@@ -271,36 +412,75 @@
 
 <div class="page">
 
-  <div class="label-row">
-    <span class="eyebrow">Rotinas · Monday</span>
-    <div class="actions">
-      <span class="updated-tag" id="updatedTag">carregando...</span>
-      <button class="icon-btn" id="refreshBtn" title="Atualizar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-      </button>
-      <a class="icon-btn" id="downloadBtn" title="Baixar planilha" href="#" download>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-      </a>
+  <!-- COLUNA ESQUERDA: ROTINAS · MONDAY -->
+  <div class="col col-left">
+    <div class="label-row">
+      <span class="eyebrow">Rotinas · Monday</span>
+      <div class="actions">
+        <span class="updated-tag" id="updatedTag">carregando...</span>
+        <button class="icon-btn" id="refreshBtn" title="Atualizar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+        </button>
+        <a class="icon-btn" id="downloadBtn" title="Baixar planilha" href="#" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="top-row" id="topRow">
+      <div class="tcard orange"><div class="label">Diário</div><div class="pct">—</div><div class="sub">carregando...</div></div>
+      <div class="tcard black"><div class="label">Semanal</div><div class="pct">—</div><div class="sub">carregando...</div></div>
+      <div class="tcard beige"><div class="label">Mensal</div><div class="pct">—</div><div class="sub">carregando...</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>Histórico da semana</h3>
+      <div class="bars-wrap" id="barsChart">
+        <div class="empty">carregando...</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Ontem</h3>
+      <div class="team-grid" id="teamGrid">
+        <div class="empty">carregando...</div>
+      </div>
     </div>
   </div>
 
-  <div class="top-row" id="topRow">
-    <div class="tcard orange"><div class="label">Diário</div><div class="pct">—</div><div class="sub">carregando...</div></div>
-    <div class="tcard black"><div class="label">Semanal</div><div class="pct">—</div><div class="sub">carregando...</div></div>
-    <div class="tcard beige"><div class="label">Mensal</div><div class="pct">—</div><div class="sub">carregando...</div></div>
-  </div>
-
-  <div class="panel">
-    <h3>Histórico da semana</h3>
-    <div class="bars-wrap" id="barsChart">
-      <div class="empty">carregando...</div>
+  <!-- COLUNA DIREITA: AQUISIÇÃO · RD STATION -->
+  <div class="col col-right">
+    <div class="label-row">
+      <span class="eyebrow">Aquisição · RD Station</span>
     </div>
-  </div>
 
-  <div class="panel">
-    <h3>Ontem</h3>
-    <div class="team-grid" id="teamGrid">
-      <div class="empty">carregando...</div>
+    <div class="panel">
+      <h3>Leads no mês</h3>
+      <div class="leads-body" id="leadsBody">
+        <div class="empty">carregando...</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Meta Orgânico</h3>
+      <div class="meta-body" id="metaBody">
+        <div class="empty">carregando...</div>
+      </div>
+    </div>
+
+    <div class="channels-row">
+      <div class="panel">
+        <h3>Tráfego por canal</h3>
+        <div class="channel-list" id="trafegoList">
+          <div class="empty">carregando...</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Orgânico por canal</h3>
+        <div class="channel-list" id="organicoList">
+          <div class="empty">carregando...</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -308,17 +488,19 @@
 
 <script>
 const SHEET_ID = "1BG7MgKomzCf4P3UwVIfHq4AlNiHO0msTDvFUtSuAZ7Y";
-const GID = "614964491";
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
+const GID_ROTINAS = "614964491";
+const GID_METAS = "182940509";
+const GID_LEADS = "221703246";
+const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
 const XLSX_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx`;
 const DIAS_SEMANA = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
 
 document.getElementById("downloadBtn").href = XLSX_URL;
 
+/* ---------- helpers ---------- */
 function stripAccents(s){
   return (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").trim().toLowerCase();
 }
-
 function parseDateBR(s){
   if(!s) return null;
   const parts = s.trim().split("/");
@@ -327,18 +509,15 @@ function parseDateBR(s){
   if(!d || !m || !y) return null;
   return new Date(y, m-1, d);
 }
-
 function formatDateBR(date){
   if(!date) return "—";
   const d = String(date.getDate()).padStart(2,"0");
   const m = String(date.getMonth()+1).padStart(2,"0");
   return `${d}/${m}`;
 }
-
 function isFeito(status){
   return stripAccents(status) === "feito";
 }
-
 function initials(name){
   const parts = (name||"").trim().split(/\s+/).filter(Boolean);
   if(!parts.length) return "?";
@@ -346,7 +525,22 @@ function initials(name){
   const second = parts.length > 1 ? (parts[1][0] || "") : "";
   return (first+second).toUpperCase();
 }
+function parseNum(v){
+  if(v === null || v === undefined) return 0;
+  const n = parseFloat(String(v).trim().replace(",","."));
+  return isNaN(n) ? 0 : n;
+}
+function titleCase(s){
+  return (s||"").toLowerCase().split(" ").map(w => w.length <= 3 ? w.toUpperCase() : (w.charAt(0).toUpperCase()+w.slice(1))).join(" ");
+}
+function fetchCsv(gid){
+  return fetch(csvUrl(gid), {cache:"no-store"}).then(res => {
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    return res.text();
+  }).then(text => Papa.parse(text, {header:true, skipEmptyLines:true}).data);
+}
 
+/* ---------- rotinas (coluna esquerda) ---------- */
 function normalizeRows(raw){
   return raw
     .filter(r => r.elemento && r.periodicidade)
@@ -362,14 +556,9 @@ function normalizeRows(raw){
     }))
     .filter(r => r.dateAntigo);
 }
-
 function periodRows(rows, periodKey){
   return rows.filter(r => r.periodicidade === periodKey);
 }
-
-// pega, por id_item, o lançamento mais recente dentro da periodicidade —
-// evita depender de todos os itens compartilharem a mesma data (semanal/mensal
-// têm vencimentos individuais, escalonados por item).
 function latestPerItem(rows, periodKey){
   const pr = periodRows(rows, periodKey);
   const map = new Map();
@@ -380,19 +569,16 @@ function latestPerItem(rows, periodKey){
   });
   return [...map.values()];
 }
-
 function summaryFor(rows, periodKey){
   const latest = latestPerItem(rows, periodKey);
   const feitas = latest.filter(r => r.feito).length;
   const total = latest.length;
   return {pct: total ? Math.round((feitas/total)*100) : null, feitas, total};
 }
-
 function latestDateOf(rows){
   if(!rows.length) return null;
   return rows.reduce((max,r) => r.dateAntigo > max ? r.dateAntigo : max, rows[0].dateAntigo);
 }
-
 function uniqueDatesDesc(rows, periodKey, limit){
   const pr = periodRows(rows, periodKey);
   const seen = new Map();
@@ -402,14 +588,12 @@ function uniqueDatesDesc(rows, periodKey, limit){
   });
   return [...seen.values()].sort((a,b) => b-a).slice(0, limit);
 }
-
 function pctForDate(rows, periodKey, date){
   const cycle = periodRows(rows, periodKey).filter(r => r.dateAntigo.getTime() === date.getTime());
   const feitas = cycle.filter(r => r.feito).length;
   const total = cycle.length;
   return {pct: total ? Math.round((feitas/total)*100) : 0, feitas, total};
 }
-
 function teamBreakdown(rows){
   const pr = periodRows(rows, "diario");
   const latest = latestDateOf(pr);
@@ -428,7 +612,8 @@ function teamBreakdown(rows){
     .sort((a,b) => b.pct - a.pct);
 }
 
-function render(rows){
+function renderRotinas(rawRows){
+  const rows = normalizeRows(rawRows);
   const dia = summaryFor(rows, "diario");
   const sem = summaryFor(rows, "semanal");
   const mes = summaryFor(rows, "mensal");
@@ -451,7 +636,6 @@ function render(rows){
     </div>
   `;
 
-  // historico da semana (ultimos 5 dias diarios registrados)
   const dailyDates = uniqueDatesDesc(rows, "diario", 5).reverse();
   const barsEl = document.getElementById("barsChart");
   if(!dailyDates.length){
@@ -472,7 +656,6 @@ function render(rows){
     }).join("");
   }
 
-  // ontem — por responsavel
   const team = teamBreakdown(rows);
   const teamGrid = document.getElementById("teamGrid");
   if(!team.length){
@@ -486,36 +669,113 @@ function render(rows){
       </div>
     `).join("");
   }
-
-  document.getElementById("updatedTag").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
-  document.getElementById("errorBox").style.display = "none";
 }
 
+/* ---------- aquisição / rd station (coluna direita) ---------- */
+function renderAquisicao(metasRows, leadsRows){
+  const metas = metasRows[0] || {};
+  const metaGeral = parseNum(metas["META GERAL"]);
+  const metaOrganico = parseNum(metas["META ORGANICO"]);
+
+  const find = (indicador, classe) => {
+    const row = leadsRows.find(r =>
+      stripAccents(r.INDICADOR) === stripAccents(indicador) &&
+      stripAccents(r.CLASSE) === stripAccents(classe)
+    );
+    return row ? parseNum(row.VALOR) : 0;
+  };
+  const listFor = (indicador) => leadsRows
+    .filter(r => stripAccents(r.INDICADOR) === stripAccents(indicador))
+    .map(r => ({classe: titleCase(r.CLASSE), valor: parseNum(r.VALOR)}))
+    .sort((a,b) => b.valor - a.valor);
+
+  const leadsGeral = find("LEADS","GERAL");
+  const pctMetaGeral = Math.round(find("LEADS % META","GERAL")*100);
+  const leadsPago = find("LEADS","PAGO");
+  const pctPago = Math.round(find("LEADS %","PAGO")*100);
+  const leadsOrganico = find("LEADS","ORGANICO");
+  const pctOrganico = Math.round(find("LEADS %","ORGANICO")*100);
+  const pctMetaOrganico = find("LEADS % META","ORGANICO");
+
+  // leads no mes
+  const R = 52, C = 2*Math.PI*R;
+  const fracGeral = metaGeral ? Math.min(leadsGeral/metaGeral,1) : 0;
+  const offset = C*(1-fracGeral);
+  document.getElementById("leadsBody").innerHTML = `
+    <div class="gauge-wrap">
+      <svg viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="${R}" stroke="#F0EEE9" stroke-width="14" fill="none"/>
+        <circle cx="60" cy="60" r="${R}" stroke="#EB571C" stroke-width="14" fill="none"
+          stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${offset}"
+          transform="rotate(-90 60 60)"/>
+      </svg>
+      <div class="gauge-num">
+        <div class="n">${Math.round(leadsGeral)}</div>
+        <div class="d">de ${Math.round(metaGeral)}</div>
+      </div>
+    </div>
+    <div class="leads-stats">
+      <div class="goal">${pctMetaGeral}% da meta geral</div>
+      <div class="split-bar">
+        <div class="seg black" style="flex:${pctPago||1}"></div>
+        <div class="seg green" style="flex:${pctOrganico||1}"></div>
+      </div>
+      <div class="split-labels">
+        <div class="l"><span class="lbl">Pago</span><span class="val">${Math.round(leadsPago)}</span></div>
+        <div class="r"><span class="lbl">Orgânico</span><span class="val">${Math.round(leadsOrganico)}</span></div>
+      </div>
+    </div>
+  `;
+
+  // meta organico
+  const pctMO = Math.round(pctMetaOrganico*100);
+  document.getElementById("metaBody").innerHTML = `
+    <div class="meta-track">
+      <div class="meta-fill" style="width:${Math.min(pctMO,100)}%"><span>${pctMO}%</span></div>
+    </div>
+    <div class="meta-total">${Math.round(leadsOrganico)}/${Math.round(metaOrganico)}</div>
+  `;
+
+  // canais
+  const renderChannelList = (elId, items, cls) => {
+    const el = document.getElementById(elId);
+    if(!items.length){ el.innerHTML = `<div class="empty">Sem dados ainda.</div>`; return; }
+    const max = Math.max(...items.map(i => i.valor), 1);
+    el.innerHTML = items.map(i => `
+      <div class="channel-row ${cls}">
+        <div class="label">${i.classe}</div>
+        <div class="track"><div class="fill" style="width:${Math.max((i.valor/max)*100,3)}%"></div></div>
+        <div class="value">${Math.round(i.valor)}</div>
+      </div>
+    `).join("");
+  };
+  renderChannelList("trafegoList", listFor("TRAFEGO POR CANAL"), "black");
+  renderChannelList("organicoList", listFor("ORGANICO POR CANAL"), "green");
+}
+
+/* ---------- load ---------- */
 function load(){
   document.getElementById("updatedTag").textContent = "carregando...";
-  fetch(CSV_URL, {cache:"no-store"})
-    .then(res => {
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      return res.text();
-    })
-    .then(text => {
-      const parsed = Papa.parse(text, {header:true, skipEmptyLines:true});
-      const rows = normalizeRows(parsed.data);
-      render(rows);
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById("errorBox").style.display = "block";
-      document.getElementById("updatedTag").textContent = "falha ao atualizar";
-    });
+  Promise.all([
+    fetchCsv(GID_ROTINAS),
+    fetchCsv(GID_METAS),
+    fetchCsv(GID_LEADS)
+  ]).then(([rotinasRows, metasRows, leadsRows]) => {
+    renderRotinas(rotinasRows);
+    renderAquisicao(metasRows, leadsRows);
+    document.getElementById("updatedTag").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    document.getElementById("errorBox").style.display = "none";
+  }).catch(err => {
+    console.error(err);
+    document.getElementById("errorBox").style.display = "block";
+    document.getElementById("updatedTag").textContent = "falha ao atualizar";
+  });
 }
 
 document.getElementById("refreshBtn").addEventListener("click", load);
 document.getElementById("retryBtn").addEventListener("click", load);
 
 load();
-
-// auto-refresh a cada 10 minutos, util pra deixar rodando na TV
 setInterval(load, 10 * 60 * 1000);
 </script>
 </body>
