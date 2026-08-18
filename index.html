@@ -393,7 +393,7 @@ function renderRotinas(rawRows){
 /* ---------- aquisição / rd station (coluna direita) ---------- */
 const PETAL_PATH = "M41.2633 0C47.0942 0 51.6504 5.03452 51.0702 10.8365L42.5285 96.2535C42.0246 101.292 37.785 105.129 32.7216 105.129H18.6655C13.6138 105.129 9.37995 101.309 8.86173 96.2838L0.0531095 10.8668C-0.546279 5.05458 4.01384 0 9.85692 0L41.2633 0Z";
 function buildGauge(pct){
-  const N = 10, startA = -90, endA = 90;
+  const N = 7, startA = -90, endA = 90;
   const filledCount = Math.round((Math.max(0,Math.min(pct,100))/100) * N);
   let html = "";
   for(let i=0;i<N;i++){
