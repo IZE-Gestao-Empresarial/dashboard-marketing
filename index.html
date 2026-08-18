@@ -280,6 +280,9 @@ function normalizeRows(raw){
     .filter(r => r.dateAntigo);
 }
 function periodRows(rows, periodKey){ return rows.filter(r => r.periodicidade === periodKey); }
+// meia-noite de hoje, no fuso do navegador — usado pra nunca misturar
+// lançamentos de hoje (ainda em andamento) com o "ultimo dia fechado"
+function today0(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
 function latestPerItem(rows, periodKey){
   const pr = periodRows(rows, periodKey);
   const map = new Map();
@@ -332,7 +335,11 @@ function teamBreakdown(rows){
 
 function renderRotinas(rawRows){
   const rows = normalizeRows(rawRows);
-  const dia = summaryFor(rows, "diario");
+  // pro Diário/Ontem/Histórico, ignora qualquer lançamento com data de hoje —
+  // esses ainda estão em andamento (o dia só "fecha" às 23:30), então não
+  // devem entrar na leitura do último dia fechado.
+  const rowsClosedDiario = rows.filter(r => !(r.periodicidade === "diario" && r.dateAntigo >= today0()));
+  const dia = summaryFor(rowsClosedDiario, "diario");
   const sem = summaryFor(rows, "semanal");
   const mes = summaryFor(rows, "mensal");
 
@@ -354,14 +361,14 @@ function renderRotinas(rawRows){
     </div>
   `;
 
-  const dailyDates = uniqueDatesDesc(rows, "diario", 5).reverse();
+  const dailyDates = uniqueDatesDesc(rowsClosedDiario, "diario", 5).reverse();
   const barsEl = document.getElementById("barsChart");
   if(!dailyDates.length){
     barsEl.innerHTML = `<div class="empty">Sem histórico diário ainda.</div>`;
   } else {
     const mostRecent = dailyDates[dailyDates.length-1].getTime();
     barsEl.innerHTML = dailyDates.map(date => {
-      const s = pctForDate(rows, "diario", date);
+      const s = pctForDate(rowsClosedDiario, "diario", date);
       const isActive = date.getTime() === mostRecent;
       const dayLabel = DIAS_SEMANA[date.getDay()];
       return `
@@ -374,7 +381,7 @@ function renderRotinas(rawRows){
     }).join("");
   }
 
-  const team = teamBreakdown(rows);
+  const team = teamBreakdown(rowsClosedDiario);
   const teamGrid = document.getElementById("teamGrid");
   if(!team.length){
     teamGrid.innerHTML = `<div class="empty">Ainda não há um dia diário fechado para mostrar por responsável.</div>`;
