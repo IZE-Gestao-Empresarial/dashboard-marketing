@@ -86,13 +86,12 @@
 
   /* leads no mes */
   .leads-body{flex:1 1 auto;display:flex;align-items:center;gap:1.8vw;min-height:0;}
-  .gauge-wrap{position:relative;width:40vh;height:26vh;flex-shrink:0;}
-  .gauge-tick{position:absolute;bottom:2.2vh;left:50%;width:6vh;height:17vh;margin-left:-3vh;transform-origin:50% 100%;color:#E3E0D8;}
-  .gauge-tick svg{display:block;width:100%;height:100%;}
-  .gauge-tick.active{color:var(--orange);}
-  .gauge-num{position:absolute;left:0;right:0;bottom:0;height:6.5vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-  .gauge-num .n{font-size:5.8vh;font-weight:600;line-height:1;}
-  .gauge-num .d{font-size:2vh;color:var(--muted);font-weight:500;margin-top:0.3vh;}
+  .gauge-wrap{position:relative;width:27vh;height:17vh;flex-shrink:0;}
+  .gauge-arc{position:absolute;top:0;left:0;width:100%;}
+  .gauge-arc svg{display:block;width:100%;height:auto;}
+  .gauge-num{position:absolute;left:0;right:0;bottom:0;height:5vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .gauge-num .n{font-size:4vh;font-weight:600;line-height:1;}
+  .gauge-num .d{font-size:1.5vh;color:var(--muted);font-weight:500;margin-top:0.25vh;}
   .leads-stats{flex:1;display:flex;flex-direction:column;gap:0.9vh;min-width:0;}
   .leads-title{margin:0;font-size:2vh;font-weight:400;color:rgba(6,6,6,.8);}
   .leads-goal{margin:0 0 0.4vh;font-size:1.3vh;font-weight:400;color:rgba(6,6,6,.7);}
@@ -391,19 +390,32 @@ function renderRotinas(rawRows){
 }
 
 /* ---------- aquisição / rd station (coluna direita) ---------- */
-const PETAL_PATH = "M41.2633 0C47.0942 0 51.6504 5.03452 51.0702 10.8365L42.5285 96.2535C42.0246 101.292 37.785 105.129 32.7216 105.129H18.6655C13.6138 105.129 9.37995 101.309 8.86173 96.2838L0.0531095 10.8668C-0.546279 5.05458 4.01384 0 9.85692 0L41.2633 0Z";
+// os 12 caminhos exatos do velocímetro (6 pares espelhados), extraídos do Figma
+const GAUGE_PATHS = [
+  "M2.62943 236.001C3.11123 230.19 8.505 226.065 14.2392 227.123L98.6583 242.693C103.638 243.612 107.111 248.154 106.693 253.2L105.531 267.208C105.114 272.242 100.957 276.146 95.9067 276.247L10.054 277.968C4.21208 278.085 -0.448421 273.123 0.0343815 267.3L2.62943 236.001Z",
+  "M19.6834 174.211C21.4286 168.647 27.5959 165.806 32.9583 168.097L111.903 201.811C116.56 203.8 118.952 208.994 117.437 213.825L113.23 227.237C111.718 232.057 106.806 234.953 101.856 233.944L17.7183 216.784C11.9931 215.617 8.53499 209.753 10.2838 204.177L19.6834 174.211Z",
+  "M55.1678 112.36C58.3303 107.461 65.0311 106.364 69.5909 109.998L136.72 163.502C140.68 166.657 141.604 172.3 138.858 176.554L131.234 188.363C128.494 192.608 122.989 194.093 118.486 191.803L41.9463 152.876C36.7381 150.227 34.9648 143.654 38.1339 138.745L55.1678 112.36Z",
+  "M105.8 59.9753C110.176 56.1214 116.923 56.8882 120.322 61.6257L170.367 131.372C173.319 135.486 172.674 141.167 168.874 144.514L158.326 153.804C154.534 157.143 148.833 157.075 145.122 153.646L82.0569 95.3675C77.7656 91.4019 77.8469 84.5948 82.2318 80.7329L105.8 59.9753Z",
+  "M164.302 24.8762C169.495 22.2254 175.842 24.6384 177.963 30.0699L209.186 110.033C211.027 114.75 208.995 120.095 204.485 122.397L191.966 128.787C187.466 131.083 181.959 129.606 179.213 125.365L132.536 53.2895C129.36 48.385 131.124 41.8099 136.328 39.1536L164.302 24.8762Z",
+  "M234.03 4.01759C239.778 3.03617 245.116 7.232 245.521 13.0489L251.478 98.6849C251.829 103.736 248.296 108.232 243.305 109.084L229.449 111.45C224.469 112.3 219.653 109.248 218.296 104.381L195.237 21.6656C193.668 16.0371 197.312 10.2871 203.072 9.30368L234.03 4.01759Z",
+  "M554.634 236.001C554.152 230.19 548.758 226.065 543.024 227.123L458.605 242.693C453.626 243.612 450.152 248.154 450.571 253.2L451.732 267.208C452.15 272.242 456.306 276.146 461.357 276.247L547.209 277.968C553.051 278.085 557.712 273.123 557.229 267.3L554.634 236.001Z",
+  "M537.58 174.211C535.835 168.647 529.668 165.806 524.305 168.097L445.36 201.811C440.704 203.8 438.312 208.994 439.827 213.825L444.034 227.237C445.546 232.057 450.458 234.953 455.407 233.944L539.545 216.784C545.271 215.617 548.729 209.753 546.98 204.177L537.58 174.211Z",
+  "M502.096 112.36C498.933 107.461 492.233 106.364 487.673 109.998L420.543 163.502C416.584 166.657 415.66 172.3 418.406 176.554L426.03 188.363C428.769 192.608 434.275 194.093 438.778 191.803L515.317 152.876C520.526 150.227 522.299 143.654 519.13 138.745L502.096 112.36Z",
+  "M451.463 59.9753C447.087 56.1214 440.341 56.8882 436.942 61.6257L386.896 131.372C383.944 135.486 384.59 141.167 388.39 144.514L398.938 153.804C402.729 157.143 408.431 157.075 412.141 153.646L475.207 95.3675C479.498 91.4019 479.417 84.5948 475.032 80.7329L451.463 59.9753Z",
+  "M392.962 24.8762C387.769 22.2254 381.422 24.6384 379.301 30.0699L348.078 110.033C346.236 114.75 348.268 120.095 352.778 122.397L365.298 128.787C369.798 131.083 375.305 129.606 378.051 125.365L424.728 53.2895C427.904 48.385 426.14 41.8099 420.936 39.1536L392.962 24.8762Z",
+  "M323.233 4.01759C317.486 3.03617 312.147 7.232 311.743 13.0489L305.786 98.6849C305.434 103.736 308.968 108.232 313.959 109.084L327.814 111.45C332.794 112.3 337.61 109.248 338.967 104.381L362.027 21.6656C363.596 16.0371 359.951 10.2871 354.192 9.30368L323.233 4.01759Z"
+];
+// ordem angular real, da esquerda pra direita (índices 0-based no array acima)
+const GAUGE_ORDER = [0,1,2,3,4,5,11,10,9,8,7,6];
+
 function buildGauge(pct){
-  const N = 6, startA = -90, endA = 90;
+  const N = GAUGE_ORDER.length;
   const filledCount = Math.round((Math.max(0,Math.min(pct,100))/100) * N);
-  let html = "";
-  for(let i=0;i<N;i++){
-    const angle = startA + (endA-startA) * (i/(N-1));
-    const active = i < filledCount;
-    html += `<div class="gauge-tick ${active?'active':''}" style="transform:rotate(${angle}deg)">`
-          + `<svg viewBox="0 0 52 106"><path d="${PETAL_PATH}" fill="currentColor"/></svg>`
-          + `</div>`;
-  }
-  return html;
+  const paths = GAUGE_ORDER.map((idx,pos) => {
+    const active = pos < filledCount;
+    return `<path d="${GAUGE_PATHS[idx]}" fill="${active ? '#EB571C' : '#F6F6F6'}"/>`;
+  }).join("");
+  return `<div class="gauge-arc"><svg viewBox="0 0 558 278" xmlns="http://www.w3.org/2000/svg">${paths}</svg></div>`;
 }
 
 function renderAquisicao(metasRows, leadsRows){
