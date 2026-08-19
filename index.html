@@ -335,11 +335,12 @@ function teamBreakdown(rows){
 
 function renderRotinas(rawRows){
   const rows = normalizeRows(rawRows);
-  // pro Diário/Ontem/Histórico, ignora qualquer lançamento com data de hoje —
-  // esses ainda estão em andamento (o dia só "fecha" às 23:30), então não
-  // devem entrar na leitura do último dia fechado.
+  // o card Diário e o histórico devem refletir o dia atual em tempo real
+  // (mesmo parcial, ainda em andamento) — por isso usam "rows" sem filtro.
+  // já o painel "Ontem" precisa sempre do último dia FECHADO (ontem), então
+  // ali ignoramos qualquer lançamento com data de hoje.
   const rowsClosedDiario = rows.filter(r => !(r.periodicidade === "diario" && r.dateAntigo >= today0()));
-  const dia = summaryFor(rowsClosedDiario, "diario");
+  const dia = summaryFor(rows, "diario");
   const sem = summaryFor(rows, "semanal");
   const mes = summaryFor(rows, "mensal");
 
@@ -361,14 +362,14 @@ function renderRotinas(rawRows){
     </div>
   `;
 
-  const dailyDates = uniqueDatesDesc(rowsClosedDiario, "diario", 5).reverse();
+  const dailyDates = uniqueDatesDesc(rows, "diario", 5).reverse();
   const barsEl = document.getElementById("barsChart");
   if(!dailyDates.length){
     barsEl.innerHTML = `<div class="empty">Sem histórico diário ainda.</div>`;
   } else {
     const mostRecent = dailyDates[dailyDates.length-1].getTime();
     barsEl.innerHTML = dailyDates.map(date => {
-      const s = pctForDate(rowsClosedDiario, "diario", date);
+      const s = pctForDate(rows, "diario", date);
       const isActive = date.getTime() === mostRecent;
       const dayLabel = DIAS_SEMANA[date.getDay()];
       return `
